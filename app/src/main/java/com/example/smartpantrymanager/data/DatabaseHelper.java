@@ -1,10 +1,18 @@
 package com.example.smartpantrymanager.data;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.example.smartpantrymanager.model.PantryItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Creates and manages the app's SQLite database.
@@ -203,5 +211,181 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onConfigure(@NonNull SQLiteDatabase db) {
         super.onConfigure(db);
         db.setForeignKeyConstraintsEnabled(true);
+    }
+
+    // ===========================================================================
+    // CRUD operations for pantry items
+    //
+    // CRUD stands for Create, Read, Update and Delete — the four things any app
+    // needs to do with stored data. Each of the methods below handles one of them.
+    // ===========================================================================
+
+    /**
+     * CREATE — saves a new ingredient to the pantry.
+     *
+     * <p>Values are passed through {@link ContentValues} rather than being pasted
+     * into a SQL string. This matters for more than tidiness: building SQL by joining
+     * strings together allows a value like {@code Tom's Sauce} to break the query, and
+     * in a networked app the same weakness is what SQL injection attacks exploit.
+     * ContentValues keeps the value and the query separate, so the text is always
+     * treated as data and never as instructions.</p>
+     *
+     * @param item the ingredient to save. Its id is ignored — SQLite assigns one.
+     * @return the id SQLite generated for the new row, or -1 if the insert failed
+     */
+    public long addPantryItem(@NonNull PantryItem item) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_PANTRY_NAME, item.getName());
+        values.put(COL_PANTRY_QUANTITY, item.getQuantity());
+        values.put(COL_PANTRY_UNIT, item.getUnit());
+        values.put(COL_PANTRY_EXPIRY, item.getExpiryDate()); // null is allowed here
+
+        return db.insert(TABLE_PANTRY, null, values);
+    }
+
+    /**
+     * READ — fetches every ingredient currently in the pantry.
+     *
+     * <p>Results are sorted by name so the list on screen has a predictable order
+     * rather than appearing in whatever sequence rows happen to sit in the table.
+     * {@code COLLATE NOCASE} makes that sort case-insensitive, so "apple" and "Apple"
+     * sit together instead of all capitalised names being grouped separately.</p>
+     *
+     * <p>The {@code Cursor} is opened inside a try-with-resources block so it is
+     * always closed, even if something throws partway through. An unclosed cursor
+     * leaks memory and Android will warn about it in Logcat.</p>
+     *
+     * @return every pantry item, or an empty list if the pantry is empty.
+     *         Never returns null — callers can safely loop over the result.
+     */
+    @NonNull
+    public List<PantryItem> getAllPantryItems() {
+        List<PantryItem> items = new ArrayList<>();
+
+        String sql = "SELECT * FROM " + TABLE_PANTRY +
+                " ORDER BY " + COL_PANTRY_NAME + " COLLATE NOCASE ASC";
+
+        try (Cursor cursor = getReadableDatabase().rawQuery(sql, null)) {
+            while (cursor.moveToNext()) {
+                items.add(readItemFromCursor(cursor));
+            }
+        }
+
+        return items;
+    }
+
+    /**
+     * READ — fetches a single pantry item by its id.
+     *
+     * <p>Used by the Edit screen, which receives only an id through the Intent that
+     * opened it and needs to load the full record to fill in the form.</p>
+     *
+     * @param id the primary key to look up
+     * @return the matching item, or null if no row has that id
+     */
+    @Nullable
+    public PantryItem getPantryItem(long id) {
+        String sql = "SELECT * FROM " + TABLE_PANTRY +
+                " WHERE " + COL_PANTRY_ID + " = ?";
+
+        try (Cursor cursor = getReadableDatabase()
+                .rawQuery(sql, new String[]{String.valueOf(id)})) {
+            if (cursor.moveToFirst()) {
+                return readItemFromCursor(cursor);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * UPDATE — overwrites an existing pantry item with new values.
+     *
+     * <p>The {@code whereArgs} parameter is what keeps this safe. The id is sent
+     * separately from the query text rather than glued into it, so it is always
+     * treated as a value to match against and never as SQL to run.</p>
+     *
+     * @param item the item to update. Must already have a real database id.
+     * @return true if exactly one row was changed
+     */
+    public boolean updatePantryItem(@NonNull PantryItem item) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_PANTRY_NAME, item.getName());
+        values.put(COL_PANTRY_QUANTITY, item.getQuantity());
+        values.put(COL_PANTRY_UNIT, item.getUnit());
+        values.put(COL_PANTRY_EXPIRY, item.getExpiryDate());
+
+        int rowsChanged = db.update(
+                TABLE_PANTRY,
+                values,
+                COL_PANTRY_ID + " = ?",
+                new String[]{String.valueOf(item.getId())}
+        );
+
+        return rowsChanged == 1;
+    }
+
+    /**
+     * DELETE — removes a pantry item.
+     *
+     * @param id the primary key of the item to remove
+     * @return true if exactly one row was deleted. Returns false if the id did not
+     *         exist, which is worth checking rather than assuming success.
+     */
+    public boolean deletePantryItem(long id) {
+        int rowsDeleted = getWritableDatabase().delete(
+                TABLE_PANTRY,
+                COL_PANTRY_ID + " = ?",
+                new String[]{String.valueOf(id)}
+        );
+
+        return rowsDeleted == 1;
+    }
+
+    /**
+     * Builds a {@link PantryItem} from the row the cursor is currently sitting on.
+     *
+     * <p>A Cursor is a pointer into a set of results — it starts before the first row
+     * and {@code moveToNext()} walks it forward one row at a time. This method reads
+     * whichever row it is currently on and turns that row into a Java object.</p>
+     *
+     * <p>It exists so the column-reading code is written once rather than repeated in
+     * every method that queries this table. If a column is ever renamed, there is a
+     * single place to fix it.</p>
+     */
+    @NonNull
+    private PantryItem readItemFromCursor(@NonNull Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(COL_PANTRY_ID));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(COL_PANTRY_NAME));
+        double quantity = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_PANTRY_QUANTITY));
+        String unit = cursor.getString(cursor.getColumnIndexOrThrow(COL_PANTRY_UNIT));
+
+        // Expiry is optional, so the column may genuinely hold NULL. getString would
+        // return null anyway, but checking isNull first makes that intention explicit.
+        int expiryIndex = cursor.getColumnIndexOrThrow(COL_PANTRY_EXPIRY);
+        String expiry = cursor.isNull(expiryIndex) ? null : cursor.getString(expiryIndex);
+
+        return new PantryItem(id, name, quantity, unit, expiry);
+    }
+
+    /**
+     * Counts how many items are in the pantry.
+     *
+     * <p>Used by the suggestions screen to tell the difference between "your pantry is
+     * empty" and "your pantry has things in it, but nothing matches a full recipe" —
+     * two situations that need different messages on screen.</p>
+     */
+    public int getPantryItemCount() {
+        try (Cursor cursor = getReadableDatabase()
+                .rawQuery("SELECT COUNT(*) FROM " + TABLE_PANTRY, null)) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+        }
+        return 0;
     }
 }
