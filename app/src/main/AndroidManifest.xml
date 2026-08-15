@@ -55,6 +55,12 @@
             android:exported="false"
             android:parentActivityName=".ui.PantryListActivity" />
 
+        <!-- Settings. Expiry alert preferences. -->
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.PantryListActivity" />
+
         <!-- The whole cookbook, so recipes are visible before the pantry is filled. -->
         <activity
             android:name=".ui.AllRecipesActivity"

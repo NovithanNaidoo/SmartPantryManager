@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The bottom navigation bar.
+
+    It lives in its own file and is pulled into each screen with <include>, so the
+    bar is defined once instead of being copied into four layouts. Changing it here
+    changes it everywhere.
+-->
+<com.google.android.material.bottomnavigation.BottomNavigationView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomNavigation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    app:elevation="8dp"
+    app:menu="@menu/menu_bottom_nav"
+    app:itemIconTint="@color/bottom_nav_item"
+    app:itemTextColor="@color/bottom_nav_item"
+    app:labelVisibilityMode="labeled" />

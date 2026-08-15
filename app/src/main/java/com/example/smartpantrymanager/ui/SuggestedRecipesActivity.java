@@ -47,12 +47,12 @@ public class SuggestedRecipesActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggested_recipes);
 
+        // No back arrow here. This screen is reached from the navigation bar, not
+        // opened on top of another screen, so a back arrow would be misleading.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
+
+        BottomNavHelper.setup(this, R.id.nav_suggested);
 
         databaseHelper = new DatabaseHelper(this);
 

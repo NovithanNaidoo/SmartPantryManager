@@ -2,93 +2,93 @@
 <!--
     The Pantry List screen.
 
-    CoordinatorLayout is used as the root because it understands how Material
-    components should behave together — for example, it automatically moves the
-    floating action button out of the way when a Snackbar appears at the bottom of
-    the screen.
+    The root is a vertical LinearLayout so the bottom navigation bar can sit fixed
+    at the bottom, with the list filling whatever space is left in between.
 -->
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/background"
     tools:context=".ui.PantryListActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/green_primary"
+        app:title="@string/title_pantry"
+        app:titleTextColor="@color/white" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+    <!--
+        layout_weight="1" makes this section take all the remaining height, which
+        pushes the navigation bar to the bottom of the screen.
+
+        CoordinatorLayout is used here so the floating action button behaves
+        correctly over the list.
+    -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPantry"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/green_primary"
-            app:title="@string/title_pantry"
-            app:titleTextColor="@color/white" />
+            android:layout_height="match_parent"
+            android:paddingTop="6dp"
+            android:paddingBottom="88dp"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_pantry"
+            tools:itemCount="4" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <!--
+            The empty state. The brief requires useful feedback rather than a blank
+            screen, so this shows whenever the pantry has nothing in it.
+        -->
+        <LinearLayout
+            android:id="@+id/layoutEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-    <!--
-        appbar_scrolling_view_behavior tells the CoordinatorLayout to position this
-        view below the toolbar rather than underneath it. Without this line the first
-        list item would be hidden behind the app bar.
-    -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerPantry"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="6dp"
-        android:paddingBottom="88dp"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/item_pantry"
-        tools:itemCount="4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_pantry_title"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
 
-    <!--
-        The empty state. The brief requires that the app gives useful feedback rather
-        than showing a blank screen, so this message is displayed whenever there is
-        nothing in the pantry. The activity switches between this and the list.
-    -->
-    <LinearLayout
-        android:id="@+id/layoutEmpty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="32dp"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:visibility="visible">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/empty_pantry_message"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="@color/text_secondary" />
 
-        <TextView
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/empty_pantry_title"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary" />
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/add_ingredient"
+            android:src="@drawable/ic_add"
+            app:backgroundTint="@color/green_primary" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/empty_pantry_message"
-            android:textAlignment="center"
-            android:textSize="15sp"
-            android:textColor="@color/text_secondary" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </LinearLayout>
+    <include layout="@layout/view_bottom_nav" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/add_ingredient"
-        android:src="@drawable/ic_add"
-        app:backgroundTint="@color/green_primary" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

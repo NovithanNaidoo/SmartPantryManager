@@ -2,11 +2,8 @@ package com.example.smartpantrymanager.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartpantrymanager.R;
 import com.example.smartpantrymanager.adapter.PantryAdapter;
+import com.example.smartpantrymanager.data.AppPreferences;
 import com.example.smartpantrymanager.data.DatabaseHelper;
 import com.example.smartpantrymanager.model.PantryItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,6 +42,7 @@ public class PantryListActivity extends AppCompatActivity
         implements PantryAdapter.OnItemClickListener {
 
     private DatabaseHelper databaseHelper;
+    private AppPreferences preferences;
     private PantryAdapter adapter;
 
     private RecyclerView recyclerPantry;
@@ -61,6 +60,7 @@ public class PantryListActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         databaseHelper = new DatabaseHelper(this);
+        preferences = new AppPreferences(this);
 
         recyclerPantry = findViewById(R.id.recyclerPantry);
         layoutEmpty = findViewById(R.id.layoutEmpty);
@@ -76,26 +76,8 @@ public class PantryListActivity extends AppCompatActivity
 
         FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(v -> openAddScreen());
-    }
 
-    /** Puts the menu into the toolbar. Temporary until the bottom nav is added. */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_pantry_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_suggested) {
-            startActivity(new Intent(this, SuggestedRecipesActivity.class));
-            return true;
-        }
-        if (item.getItemId() == R.id.action_all_recipes) {
-            startActivity(new Intent(this, AllRecipesActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        BottomNavHelper.setup(this, R.id.nav_pantry);
     }
 
     /**
@@ -123,6 +105,12 @@ public class PantryListActivity extends AppCompatActivity
      * empty-state message.
      */
     private void loadPantryItems() {
+        // Settings are re-read here, so returning from the Settings screen shows
+        // the change straight away.
+        adapter.setExpiryHighlight(
+                preferences.isExpiryAlertsEnabled(),
+                preferences.getExpiryAlertDays());
+
         List<PantryItem> items = databaseHelper.getAllPantryItems();
         adapter.setItems(items);
 

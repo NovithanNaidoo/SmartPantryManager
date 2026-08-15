@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A colour that changes with state. The selected tab is green, the rest are grey.
+    Android picks the first matching line, so the checked case must come first.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/green_primary" android:state_checked="true" />
+    <item android:color="@color/text_secondary" />
+</selector>
