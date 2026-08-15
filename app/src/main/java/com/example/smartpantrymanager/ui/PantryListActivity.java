@@ -1,8 +1,8 @@
 package com.example.smartpantrymanager.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,8 +72,18 @@ public class PantryListActivity extends AppCompatActivity
         recyclerPantry.setAdapter(adapter);
 
         FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
-        fabAdd.setOnClickListener(v ->
-                Toast.makeText(this, "Add screen coming next", Toast.LENGTH_SHORT).show());
+        fabAdd.setOnClickListener(v -> openAddScreen());
+    }
+
+    /**
+     * Opens the form with no id attached, which puts it in "add" mode.
+     *
+     * An Intent is the message used to start another screen. Here it just names
+     * the Activity to open, with no extra data.
+     */
+    private void openAddScreen() {
+        Intent intent = new Intent(this, AddEditIngredientActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -101,12 +111,17 @@ public class PantryListActivity extends AppCompatActivity
     }
 
     /**
-     * Called by the adapter when a row is tapped. The edit screen is added in the
-     * next step, so for now this simply confirms that the click is being received.
+     * Called by the adapter when a row is tapped. Opens the same form in "edit"
+     * mode by attaching the tapped item's id to the Intent.
+     *
+     * Only the id is passed, not the whole item. The edit screen loads the current
+     * values from the database itself, so it can never show stale data.
      */
     @Override
     public void onItemClick(PantryItem item) {
-        Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, AddEditIngredientActivity.class);
+        intent.putExtra(AddEditIngredientActivity.EXTRA_ITEM_ID, item.getId());
+        startActivity(intent);
     }
 
     /**

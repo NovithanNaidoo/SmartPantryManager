@@ -1,12 +1,7 @@
 <resources>
     <string name="app_name">Smart Pantry Manager</string>
 
-    <!--
-        All user-facing text lives here rather than being typed directly into layouts
-        or Java code. This is standard Android practice: it keeps wording consistent,
-        makes it easy to correct a phrase in one place, and is what makes translating
-        an app into another language possible without touching any code.
-    -->
+    <!-- All text the user sees is kept here, not typed into layouts or Java. -->
 
     <!-- Pantry list screen -->
     <string name="title_pantry">My Pantry</string>
@@ -18,4 +13,30 @@
     <!-- Expiry -->
     <string name="expires_on">Expires %1$s</string>
     <string name="no_expiry">No expiry date</string>
+
+    <!-- Add / Edit screen -->
+    <string name="title_add_ingredient">Add Ingredient</string>
+    <string name="title_edit_ingredient">Edit Ingredient</string>
+    <string name="label_name">Ingredient name</string>
+    <string name="label_quantity">Quantity</string>
+    <string name="label_unit">Unit</string>
+    <string name="label_expiry">Expiry date (optional)</string>
+    <string name="hint_expiry">Tap to pick a date</string>
+    <string name="button_save">Save</string>
+    <string name="button_clear_date">Clear date</string>
+
+    <!-- Validation messages -->
+    <string name="error_name_required">Please enter an ingredient name</string>
+    <string name="error_name_too_short">Name must be at least 2 characters</string>
+    <string name="error_quantity_required">Please enter a quantity</string>
+    <string name="error_quantity_invalid">Quantity must be a number greater than 0</string>
+    <string name="error_quantity_too_large">That quantity looks too large</string>
+
+    <!-- Confirmations -->
+    <string name="saved_item">Saved</string>
+    <string name="deleted_item">Deleted</string>
+    <string name="action_delete">Delete</string>
+    <string name="delete_title">Delete ingredient?</string>
+    <string name="delete_message">%1$s will be removed from your pantry.</string>
+    <string name="cancel">Cancel</string>
 </resources>

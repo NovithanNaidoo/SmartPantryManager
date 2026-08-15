@@ -10,9 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.smartpantrymanager.model.PantryItem;
+import com.example.smartpantrymanager.model.Recipe;
+import com.example.smartpantrymanager.model.RecipeIngredient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Creates and manages the app's SQLite database.
@@ -654,6 +658,104 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             db.insert(TABLE_RECIPE_INGREDIENTS, null, ingredientValues);
         }
+    }
+
+    // ===========================================================================
+    // Reading recipes
+    // ===========================================================================
+
+    /**
+     * Loads every recipe with its ingredients attached.
+     *
+     * This runs two queries in total, not one per recipe. Querying inside a loop
+     * would mean 19 separate queries for 18 recipes, which is slow and a common
+     * performance mistake. Instead all ingredients are fetched at once and matched
+     * to their recipes in memory.
+     */
+    @NonNull
+    public List<Recipe> getAllRecipes() {
+        List<Recipe> recipes = new ArrayList<>();
+
+        // Keyed by recipe id so ingredients can be attached without searching the list.
+        Map<Long, Recipe> recipesById = new HashMap<>();
+
+        String recipeSql = "SELECT * FROM " + TABLE_RECIPES +
+                " ORDER BY " + COL_RECIPE_NAME + " COLLATE NOCASE ASC";
+
+        try (Cursor cursor = getReadableDatabase().rawQuery(recipeSql, null)) {
+            while (cursor.moveToNext()) {
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(COL_RECIPE_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(COL_RECIPE_NAME));
+                String steps = cursor.getString(cursor.getColumnIndexOrThrow(COL_RECIPE_STEPS));
+
+                Recipe recipe = new Recipe(id, name, steps);
+                recipes.add(recipe);
+                recipesById.put(id, recipe);
+            }
+        }
+
+        // Second query: every ingredient for every recipe in one go.
+        String ingredientSql = "SELECT * FROM " + TABLE_RECIPE_INGREDIENTS;
+
+        try (Cursor cursor = getReadableDatabase().rawQuery(ingredientSql, null)) {
+            while (cursor.moveToNext()) {
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(COL_RI_ID));
+                long recipeId = cursor.getLong(cursor.getColumnIndexOrThrow(COL_RI_RECIPE_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(COL_RI_NAME));
+                double quantity = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_RI_QUANTITY));
+                String unit = cursor.getString(cursor.getColumnIndexOrThrow(COL_RI_UNIT));
+
+                Recipe recipe = recipesById.get(recipeId);
+                if (recipe != null) {
+                    recipe.addIngredient(
+                            new RecipeIngredient(id, recipeId, name, quantity, unit));
+                }
+            }
+        }
+
+        return recipes;
+    }
+
+    /**
+     * Loads one recipe with its ingredients. Used by the recipe detail screen.
+     * Returns null if no recipe has that id.
+     */
+    @Nullable
+    public Recipe getRecipe(long recipeId) {
+        Recipe recipe = null;
+
+        String recipeSql = "SELECT * FROM " + TABLE_RECIPES +
+                " WHERE " + COL_RECIPE_ID + " = ?";
+
+        try (Cursor cursor = getReadableDatabase()
+                .rawQuery(recipeSql, new String[]{String.valueOf(recipeId)})) {
+            if (cursor.moveToFirst()) {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(COL_RECIPE_NAME));
+                String steps = cursor.getString(cursor.getColumnIndexOrThrow(COL_RECIPE_STEPS));
+                recipe = new Recipe(recipeId, name, steps);
+            }
+        }
+
+        if (recipe == null) {
+            return null;
+        }
+
+        String ingredientSql = "SELECT * FROM " + TABLE_RECIPE_INGREDIENTS +
+                " WHERE " + COL_RI_RECIPE_ID + " = ?";
+
+        try (Cursor cursor = getReadableDatabase()
+                .rawQuery(ingredientSql, new String[]{String.valueOf(recipeId)})) {
+            while (cursor.moveToNext()) {
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(COL_RI_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(COL_RI_NAME));
+                double quantity = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_RI_QUANTITY));
+                String unit = cursor.getString(cursor.getColumnIndexOrThrow(COL_RI_UNIT));
+
+                recipe.addIngredient(new RecipeIngredient(id, recipeId, name, quantity, unit));
+            }
+        }
+
+        return recipe;
     }
 
     /**

@@ -39,6 +39,16 @@
             </intent-filter>
         </activity>
 
+        <!--
+            The add/edit form. exported="false" because only this app opens it.
+            parentActivityName gives the back arrow somewhere sensible to go.
+        -->
+        <activity
+            android:name=".ui.AddEditIngredientActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.PantryListActivity"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>
