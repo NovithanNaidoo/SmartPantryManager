@@ -8,11 +8,17 @@
     android:gravity="center_vertical"
     android:paddingVertical="6dp">
 
+    <!--
+        The icon and its description are both set from Java, because they depend on
+        whether the user has this ingredient. A default description is given here so
+        the view is never left unlabelled for screen readers.
+    -->
     <ImageView
         android:id="@+id/imageStatus"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginEnd="12dp"
+        android:contentDescription="@string/have_ingredient"
         tools:src="@drawable/ic_check" />
 
     <TextView
