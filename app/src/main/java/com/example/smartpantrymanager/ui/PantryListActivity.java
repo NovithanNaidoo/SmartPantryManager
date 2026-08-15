@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartpantrymanager.R;
 import com.example.smartpantrymanager.adapter.PantryAdapter;
+import com.example.smartpantrymanager.data.AppPreferences;
 import com.example.smartpantrymanager.data.DatabaseHelper;
 import com.example.smartpantrymanager.model.PantryItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,6 +45,7 @@ public class PantryListActivity extends AppCompatActivity
         implements PantryAdapter.OnItemClickListener {
 
     private DatabaseHelper databaseHelper;
+    private AppPreferences preferences;
     private PantryAdapter adapter;
 
     private RecyclerView recyclerPantry;
@@ -61,6 +63,7 @@ public class PantryListActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         databaseHelper = new DatabaseHelper(this);
+        preferences = new AppPreferences(this);
 
         recyclerPantry = findViewById(R.id.recyclerPantry);
         layoutEmpty = findViewById(R.id.layoutEmpty);
@@ -95,6 +98,10 @@ public class PantryListActivity extends AppCompatActivity
             startActivity(new Intent(this, AllRecipesActivity.class));
             return true;
         }
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -123,6 +130,12 @@ public class PantryListActivity extends AppCompatActivity
      * empty-state message.
      */
     private void loadPantryItems() {
+        // Settings are re-read here, so returning from the Settings screen shows
+        // the change straight away.
+        adapter.setExpiryHighlight(
+                preferences.isExpiryAlertsEnabled(),
+                preferences.getExpiryAlertDays());
+
         List<PantryItem> items = databaseHelper.getAllPantryItems();
         adapter.setItems(items);
 

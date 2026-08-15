@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartpantrymanager.R;
+import com.example.smartpantrymanager.logic.ExpiryHelper;
 import com.example.smartpantrymanager.model.PantryItem;
 
 import java.util.ArrayList;
@@ -53,8 +54,25 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
     private final List<PantryItem> items = new ArrayList<>();
     private final OnItemClickListener clickListener;
 
+    // Controlled by the Settings screen.
+    private boolean highlightExpiring = true;
+    private int expiryWarningDays = 3;
+
     public PantryAdapter(OnItemClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    /**
+     * Applies the user's expiry alert settings.
+     *
+     * The adapter is told what to do rather than reading the settings itself,
+     * which keeps it focused on displaying data.
+     */
+    @SuppressWarnings("NotifyDataSetChanged")
+    public void setExpiryHighlight(boolean enabled, int warningDays) {
+        this.highlightExpiring = enabled;
+        this.expiryWarningDays = warningDays;
+        notifyDataSetChanged();
     }
 
     /**
@@ -105,21 +123,55 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         holder.textName.setText(item.getName());
         holder.textQuantity.setText(item.getDisplayQuantity());
 
-        // Expiry is optional, so there are two possible states and both must be
-        // handled. If this only set the text when an expiry existed, a recycled row
-        // would keep showing the previous item's expiry date.
-        if (item.getExpiryDate() == null || item.getExpiryDate().isEmpty()) {
-            holder.textExpiry.setText(R.string.no_expiry);
-        } else {
-            holder.textExpiry.setText(
-                    holder.itemView.getContext().getString(R.string.expires_on, item.getExpiryDate()));
-        }
+        showExpiry(holder, item);
 
         holder.itemView.setOnClickListener(v -> {
             if (clickListener != null) {
                 clickListener.onItemClick(item);
             }
         });
+    }
+
+    /**
+     * Shows the expiry line, in orange if the item needs using up soon.
+     *
+     * Every branch sets both the text and the colour. Because rows are recycled,
+     * setting only one of them would leave the other holding a previous item's
+     * value, so an ordinary item could appear in warning orange.
+     */
+    private void showExpiry(@NonNull PantryViewHolder holder, @NonNull PantryItem item) {
+        android.content.Context context = holder.itemView.getContext();
+        String expiry = item.getExpiryDate();
+
+        if (expiry == null || expiry.isEmpty()) {
+            holder.textExpiry.setText(R.string.no_expiry);
+            holder.textExpiry.setTextColor(context.getColor(R.color.text_secondary));
+            return;
+        }
+
+        boolean warn = highlightExpiring
+                && ExpiryHelper.isExpiringSoon(expiry, expiryWarningDays);
+
+        if (!warn) {
+            holder.textExpiry.setText(context.getString(R.string.expires_on, expiry));
+            holder.textExpiry.setTextColor(context.getColor(R.color.text_secondary));
+            return;
+        }
+
+        // Plain wording reads better than a date when something needs using now.
+        long days = ExpiryHelper.daysUntil(expiry);
+
+        if (days < 0) {
+            holder.textExpiry.setText(R.string.expiry_passed);
+        } else if (days == 0) {
+            holder.textExpiry.setText(R.string.expiry_today);
+        } else if (days == 1) {
+            holder.textExpiry.setText(R.string.expiry_tomorrow);
+        } else {
+            holder.textExpiry.setText(context.getString(R.string.expiry_in_days, days));
+        }
+
+        holder.textExpiry.setTextColor(context.getColor(R.color.expiring_soon));
     }
 
     /**
