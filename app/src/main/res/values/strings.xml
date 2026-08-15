@@ -28,9 +28,22 @@
     <!-- Validation messages -->
     <string name="error_name_required">Please enter an ingredient name</string>
     <string name="error_name_too_short">Name must be at least 2 characters</string>
+    <string name="hint_quantity_help">Decimals and fractions both work, e.g. 0.25 or 1/4</string>
     <string name="error_quantity_required">Please enter a quantity</string>
     <string name="error_quantity_invalid">Quantity must be a number greater than 0</string>
     <string name="error_quantity_too_large">That quantity looks too large</string>
+
+    <!-- Suggested recipes screen -->
+    <string name="title_suggested">Suggested Recipes</string>
+    <string name="action_suggested">Suggested recipes</string>
+    <string name="header_makeable">You can cook these now</string>
+    <string name="header_almost">Almost there</string>
+    <string name="header_almost_subtitle">Missing just one ingredient</string>
+    <string name="recipe_ingredient_count">%1$d ingredients</string>
+    <string name="recipe_missing">Missing: %1$s</string>
+    <string name="empty_suggested_pantry">Your pantry is empty. Add some ingredients and we will show you what you can cook.</string>
+    <string name="empty_suggested_none">No recipes match your pantry yet. Add more ingredients to unlock recipes.</string>
+    <string name="suggested_summary">%1$d of %2$d recipes</string>
 
     <!-- Confirmations -->
     <string name="saved_item">Saved</string>

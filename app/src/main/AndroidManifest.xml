@@ -49,6 +49,12 @@
             android:parentActivityName=".ui.PantryListActivity"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- Suggested recipes. Reached from the pantry list toolbar menu. -->
+        <activity
+            android:name=".ui.SuggestedRecipesActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.PantryListActivity" />
+
     </application>
 
 </manifest>
