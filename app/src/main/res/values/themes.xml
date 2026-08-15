@@ -1,8 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SmartPantryManager" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!--
+        The app uses a fixed light theme.
+
+        The layouts use hardcoded light colours - white cards on a pale grey
+        background - so following the phone's dark mode would put light text on
+        light backgrounds and make things unreadable. Forcing the light theme keeps
+        the app looking the same on every device, which also means the screenshots
+        in the report match what the marker sees.
+    -->
+    <style name="Base.Theme.SmartPantryManager" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/green_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+
+        <!-- The status bar at the very top of the screen. -->
+        <item name="android:statusBarColor">@color/green_dark</item>
     </style>
 
     <style name="Theme.SmartPantryManager" parent="Base.Theme.SmartPantryManager" />
