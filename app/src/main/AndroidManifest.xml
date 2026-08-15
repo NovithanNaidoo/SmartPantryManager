@@ -55,6 +55,12 @@
             android:exported="false"
             android:parentActivityName=".ui.PantryListActivity" />
 
+        <!-- Full detail for one recipe. Opened by tapping any recipe row. -->
+        <activity
+            android:name=".ui.RecipeDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.SuggestedRecipesActivity" />
+
     </application>
 
 </manifest>

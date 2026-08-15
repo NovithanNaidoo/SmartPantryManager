@@ -1,9 +1,9 @@
 package com.example.smartpantrymanager.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -147,13 +147,12 @@ public class SuggestedRecipesActivity extends AppCompatActivity
         sectionAlmost.setVisibility(rows.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
-    /**
-     * Tapping a recipe will open the detail screen. That screen is built in the
-     * next step, so for now this confirms the tap was received.
-     */
+    /** Opens the detail screen, passing only the recipe id in the Intent. */
     @Override
     public void onRecipeClick(Recipe recipe) {
-        Toast.makeText(this, recipe.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, RecipeDetailActivity.class);
+        intent.putExtra(RecipeDetailActivity.EXTRA_RECIPE_ID, recipe.getId());
+        startActivity(intent);
     }
 
     @Override

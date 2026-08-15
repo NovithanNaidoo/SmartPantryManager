@@ -45,6 +45,20 @@
     <string name="empty_suggested_none">No recipes match your pantry yet. Add more ingredients to unlock recipes.</string>
     <string name="suggested_summary">%1$d of %2$d recipes</string>
 
+    <!-- Recipe detail screen -->
+    <string name="header_ingredients">Ingredients</string>
+    <string name="header_method">Method</string>
+    <string name="detail_have_all">You have everything for this recipe</string>
+    <string name="detail_missing_count">Missing %1$d of %2$d ingredients</string>
+    <string name="have_ingredient">You have this</string>
+    <string name="step_format">%1$d.  %2$s</string>
+    <string name="missing_ingredient">You do not have enough of this</string>
+
+    <!-- All recipes screen -->
+    <string name="title_all_recipes">All Recipes</string>
+    <string name="action_all_recipes">All recipes</string>
+    <string name="all_recipes_summary">%1$d recipes in the cookbook</string>
+
     <!-- Confirmations -->
     <string name="saved_item">Saved</string>
     <string name="deleted_item">Deleted</string>
