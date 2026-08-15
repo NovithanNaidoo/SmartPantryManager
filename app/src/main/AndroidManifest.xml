@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+        Every Activity must be declared here. An Activity missing from the manifest
+        compiles perfectly well and then crashes the moment the app tries to open it,
+        which makes it a genuinely easy mistake to overlook.
+
+        No permissions are requested anywhere in this file. The app stores everything
+        locally in SQLite and uses no internet, camera or location features. The brief
+        explicitly forbids maps, GPS and location services, and none are present.
+    -->
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -10,9 +20,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SmartPantryManager">
+        android:theme="@style/Theme.SmartPantryManager"
+        tools:targetApi="31">
+
+        <!--
+            The launcher Activity. The intent-filter below is what tells Android this
+            is the screen to open when the user taps the app icon, and it is why this
+            Activity also needs android:exported="true" — it is started from outside
+            the app.
+        -->
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.PantryListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">SmartPantryManager</string>
+    <string name="app_name">Smart Pantry Manager</string>
+
+    <!--
+        All user-facing text lives here rather than being typed directly into layouts
+        or Java code. This is standard Android practice: it keeps wording consistent,
+        makes it easy to correct a phrase in one place, and is what makes translating
+        an app into another language possible without touching any code.
+    -->
+
+    <!-- Pantry list screen -->
+    <string name="title_pantry">My Pantry</string>
+    <string name="empty_pantry_title">Your pantry is empty</string>
+    <string name="empty_pantry_message">Tap the + button to add the ingredients you have at home.</string>
+    <string name="add_ingredient">Add ingredient</string>
+    <string name="pantry_item_count">%1$d items in your pantry</string>
+
+    <!-- Expiry -->
+    <string name="expires_on">Expires %1$s</string>
+    <string name="no_expiry">No expiry date</string>
 </resources>
