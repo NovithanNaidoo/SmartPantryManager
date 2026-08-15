@@ -58,6 +58,8 @@
     <string name="title_all_recipes">All Recipes</string>
     <string name="action_all_recipes">All recipes</string>
     <string name="all_recipes_summary">%1$d recipes in the cookbook</string>
+    <string name="recipe_ready">Ready to cook</string>
+    <string name="recipe_needs">%1$d ingredients, %2$d missing</string>
 
     <!-- Confirmations -->
     <string name="saved_item">Saved</string>

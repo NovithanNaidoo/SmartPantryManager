@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Every recipe in the app, whether or not the user can cook it.
+
+    This screen lets a new user see the cookbook before they have added anything
+    to their pantry, so it is obvious the app has recipes waiting.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context=".ui.AllRecipesActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/green_primary"
+        app:title="@string/title_all_recipes"
+        app:titleTextColor="@color/white"
+        app:navigationIconTint="@color/white" />
+
+    <TextView
+        android:id="@+id/textSummary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="6dp"
+        android:textSize="13sp"
+        android:textColor="@color/text_secondary"
+        tools:text="18 recipes in the cookbook" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerAllRecipes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_recipe"
+        tools:itemCount="6" />
+
+</LinearLayout>

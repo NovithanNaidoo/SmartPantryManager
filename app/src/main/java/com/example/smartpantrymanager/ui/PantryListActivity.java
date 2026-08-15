@@ -91,6 +91,10 @@ public class PantryListActivity extends AppCompatActivity
             startActivity(new Intent(this, SuggestedRecipesActivity.class));
             return true;
         }
+        if (item.getItemId() == R.id.action_all_recipes) {
+            startActivity(new Intent(this, AllRecipesActivity.class));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

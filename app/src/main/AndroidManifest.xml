@@ -55,6 +55,12 @@
             android:exported="false"
             android:parentActivityName=".ui.PantryListActivity" />
 
+        <!-- The whole cookbook, so recipes are visible before the pantry is filled. -->
+        <activity
+            android:name=".ui.AllRecipesActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.PantryListActivity" />
+
         <!-- Full detail for one recipe. Opened by tapping any recipe row. -->
         <activity
             android:name=".ui.RecipeDetailActivity"

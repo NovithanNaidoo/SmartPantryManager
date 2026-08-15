@@ -2,8 +2,8 @@
 <!--
     Toolbar menu for the pantry list.
 
-    This is temporary navigation so the suggestions screen can be reached and
-    tested. A proper bottom navigation bar replaces it in step 12.
+    Temporary navigation so the other screens can be reached and tested. A bottom
+    navigation bar replaces this in step 12.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -11,6 +11,11 @@
     <item
         android:id="@+id/action_suggested"
         android:title="@string/action_suggested"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_all_recipes"
+        android:title="@string/action_all_recipes"
         app:showAsAction="never" />
 
 </menu>
