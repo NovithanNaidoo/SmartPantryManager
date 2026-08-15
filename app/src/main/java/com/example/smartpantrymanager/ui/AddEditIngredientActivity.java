@@ -169,7 +169,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         }
 
         String name = textOf(editName);
-        double quantity = Double.parseDouble(textOf(editQuantity));
+        double quantity = parseQuantity(textOf(editQuantity));
         String unit = (String) spinnerUnit.getSelectedItem();
 
         String expiry = textOf(editExpiry);
@@ -224,9 +224,9 @@ public class AddEditIngredientActivity extends AppCompatActivity {
 
         double quantity;
         try {
-            quantity = Double.parseDouble(quantityText);
+            quantity = parseQuantity(quantityText);
         } catch (NumberFormatException e) {
-            // The keyboard is numeric, but a user can still type "1.2.3" or paste text.
+            // Someone can still type "1.2.3" or "1/0", so this must be caught.
             layoutQuantity.setError(getString(R.string.error_quantity_invalid));
             editQuantity.requestFocus();
             return false;
@@ -279,6 +279,63 @@ public class AddEditIngredientActivity extends AppCompatActivity {
                     finish();
                 })
                 .show();
+    }
+
+    /**
+     * Turns what the user typed into a number.
+     *
+     * Recipes are often written in quarters and halves, so plain decimals are not
+     * enough. This accepts three shapes:
+     *
+     *   0.25      a decimal
+     *   1/4       a fraction
+     *   1 1/2     a whole number and a fraction
+     *
+     * Throws NumberFormatException if the text is not any of those, which the
+     * validation method catches and turns into an error message.
+     */
+    private double parseQuantity(String text) {
+        String value = text.trim().replaceAll("\\s+", " ");
+
+        if (value.isEmpty()) {
+            throw new NumberFormatException("empty");
+        }
+
+        // "1 1/2" — a whole number, a space, then a fraction.
+        if (value.contains(" ")) {
+            String[] parts = value.split(" ");
+            if (parts.length != 2) {
+                throw new NumberFormatException("too many parts");
+            }
+            return Double.parseDouble(parts[0]) + parseFraction(parts[1]);
+        }
+
+        // "1/4"
+        if (value.contains("/")) {
+            return parseFraction(value);
+        }
+
+        // "0.25"
+        return Double.parseDouble(value);
+    }
+
+    /** Turns "3/4" into 0.75. */
+    private double parseFraction(String text) {
+        String[] parts = text.split("/");
+
+        if (parts.length != 2) {
+            throw new NumberFormatException("bad fraction");
+        }
+
+        double top = Double.parseDouble(parts[0]);
+        double bottom = Double.parseDouble(parts[1]);
+
+        // Dividing by zero gives Infinity rather than crashing, so block it here.
+        if (bottom == 0) {
+            throw new NumberFormatException("divide by zero");
+        }
+
+        return top / bottom;
     }
 
     /** Reads an input box as trimmed text, never null. */

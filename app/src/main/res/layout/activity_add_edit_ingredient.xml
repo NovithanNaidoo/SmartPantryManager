@@ -57,14 +57,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="@string/label_quantity">
+                    android:hint="@string/label_quantity"
+                    app:helperText="@string/hint_quantity_help"
+                    app:helperTextEnabled="true">
 
-                    <!-- numberDecimal keeps the keyboard to digits and one dot. -->
+                    <!--
+                        android:digits limits typing to numbers, a dot, a slash and a
+                        space. That allows "0.25" and "1/4" while still blocking
+                        letters, so recipes measured in quarters can be entered.
+                    -->
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editQuantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
+                        android:inputType="text"
+                        android:digits="0123456789./ "
                         android:maxLines="1" />
 
                 </com.google.android.material.textfield.TextInputLayout>
