@@ -26,11 +26,25 @@ import com.google.android.material.button.MaterialButton;
  */
 public class SplashActivity extends AppCompatActivity {
 
-    /** How far from the centre the ingredients sit, in dp. */
-    private static final float RING_RADIUS_DP = 130f;
+    /**
+     * Where each ingredient settles, as an offset from the centre of the screen in dp.
+     *
+     * These are set by hand rather than spaced evenly around a circle. An even ring
+     * always places one icon directly below the logo, which is where the app name and
+     * tagline sit, so the icons ended up on top of the text. Three above and three
+     * below keeps the middle of the screen clear.
+     */
+    private static final float[][] POSITIONS_DP = {
+            {0, -200},      // tomato, straight above the logo
+            {-135, -120},   // milk, upper left
+            {135, -120},    // egg, upper right
+            {-120, 185},    // carrot, lower left
+            {120, 185},     // cheese, lower right
+            {0, 235}        // bread, straight below the tagline
+    };
 
-    /** How far they fly when the button is tapped. */
-    private static final float BURST_RADIUS_DP = 700f;
+    /** How much further out they fly when the button is tapped. */
+    private static final float BURST_MULTIPLIER = 4.5f;
 
     private ImageView[] ingredients;
     private View branding;
@@ -91,11 +105,8 @@ public class SplashActivity extends AppCompatActivity {
             food.setScaleX(0.3f);
             food.setScaleY(0.3f);
 
-            // Work out where this one belongs in the ring. Six ingredients means
-            // one every 60 degrees around a circle.
-            double angle = Math.toRadians((360.0 / ingredients.length) * i - 90);
-            float x = (float) (Math.cos(angle) * dp(RING_RADIUS_DP));
-            float y = (float) (Math.sin(angle) * dp(RING_RADIUS_DP));
+            float x = dp(POSITIONS_DP[i][0]);
+            float y = dp(POSITIONS_DP[i][1]);
 
             food.animate()
                     .alpha(1f)
@@ -158,11 +169,10 @@ public class SplashActivity extends AppCompatActivity {
         for (int i = 0; i < ingredients.length; i++) {
             ImageView food = ingredients[i];
 
-            // Same angle as before, but a much larger radius so each one flies
-            // straight off its own edge of the screen.
-            double angle = Math.toRadians((360.0 / ingredients.length) * i - 90);
-            float x = (float) (Math.cos(angle) * dp(BURST_RADIUS_DP));
-            float y = (float) (Math.sin(angle) * dp(BURST_RADIUS_DP));
+            // Same direction each one already sits in, just much further out, so
+            // every icon carries on the way it was facing and leaves the screen.
+            float x = dp(POSITIONS_DP[i][0] * BURST_MULTIPLIER);
+            float y = dp(POSITIONS_DP[i][1] * BURST_MULTIPLIER);
 
             food.animate()
                     .translationX(x)
