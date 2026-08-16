@@ -81,8 +81,6 @@ public class PantryListActivity extends AppCompatActivity
 
         FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(v -> openAddScreen());
-
-        BottomNavHelper.setup(this, R.id.nav_pantry);
     }
 
     /** Puts the Clear all option into the toolbar overflow menu. */
@@ -145,6 +143,7 @@ public class PantryListActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        BottomNavHelper.setup(this, R.id.nav_pantry);
         loadPantryItems();
     }
 

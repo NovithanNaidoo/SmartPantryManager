@@ -43,8 +43,6 @@ public class AllRecipesActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        BottomNavHelper.setup(this, R.id.nav_recipes);
-
         databaseHelper = new DatabaseHelper(this);
         textSummary = findViewById(R.id.textSummary);
 
@@ -60,6 +58,7 @@ public class AllRecipesActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        BottomNavHelper.setup(this, R.id.nav_recipes);
         loadRecipes();
     }
 

@@ -38,12 +38,16 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        BottomNavHelper.setup(this, R.id.nav_settings);
-
         preferences = new AppPreferences(this);
 
         setupSwitch();
         setupDaysSpinner();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BottomNavHelper.setup(this, R.id.nav_settings);
     }
 
     private void setupSwitch() {

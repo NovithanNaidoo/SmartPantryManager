@@ -52,8 +52,6 @@ public class SuggestedRecipesActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        BottomNavHelper.setup(this, R.id.nav_suggested);
-
         databaseHelper = new DatabaseHelper(this);
 
         textEmptyState = findViewById(R.id.textEmptyState);
@@ -80,6 +78,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        BottomNavHelper.setup(this, R.id.nav_suggested);
         refreshSuggestions();
     }
 

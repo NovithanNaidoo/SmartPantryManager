@@ -25,6 +25,12 @@ final class BottomNavHelper {
     /**
      * Sets up the bar and handles taps.
      *
+     * Call this from onResume, not onCreate. When the user navigates back to a
+     * screen that is already open, Android reuses it and onCreate does not run
+     * again, so the highlighted tab would be left on whichever one was tapped
+     * last. onResume runs every time the screen comes forward, which keeps the
+     * highlight matching the screen actually being shown.
+     *
      * @param activity      the screen the bar is on
      * @param currentItemId which tab should appear selected
      */
