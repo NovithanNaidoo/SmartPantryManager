@@ -81,6 +81,13 @@
     <string name="settings_about_body">Smart Pantry Manager suggests recipes using only the ingredients you already have, so nothing goes to waste.\n\nAll data is stored on this device using SQLite. Nothing is uploaded anywhere.</string>
     <string name="settings_version">Version 1.0</string>
 
+    <!-- Clear all -->
+    <string name="action_clear_all">Clear all</string>
+    <string name="clear_all_title">Clear the whole pantry?</string>
+    <string name="clear_all_message">All %1$d items will be removed. This cannot be undone.</string>
+    <string name="clear_all_done">Pantry cleared</string>
+    <string name="clear_all_already_empty">Your pantry is already empty</string>
+
     <!-- Confirmations and dialogs -->
     <string name="saved_item">Saved</string>
     <string name="deleted_item">Deleted</string>

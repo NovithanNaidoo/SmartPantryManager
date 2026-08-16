@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Toolbar menu for the pantry list. -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--
+        Kept in the overflow menu rather than shown as a button on the toolbar.
+        Clearing the pantry is destructive and rarely wanted, so it should not sit
+        under the user's thumb where it can be tapped by accident.
+    -->
+    <item
+        android:id="@+id/action_clear_all"
+        android:title="@string/action_clear_all"
+        app:showAsAction="never" />
+
+</menu>

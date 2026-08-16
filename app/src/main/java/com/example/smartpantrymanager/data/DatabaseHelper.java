@@ -357,6 +357,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * DELETE ALL — empties the pantry in one go.
+     *
+     * Passing "1" as the where clause matches every row, because 1 is always true.
+     * Passing null instead would also delete everything, but it returns 0 rather
+     * than the number of rows removed, and we want that count to report back.
+     *
+     * @return how many items were deleted
+     */
+    public int deleteAllPantryItems() {
+        return getWritableDatabase().delete(TABLE_PANTRY, "1", null);
+    }
+
+    /**
      * Builds a {@link PantryItem} from the row the cursor is currently sitting on.
      *
      * <p>A Cursor is a pointer into a set of results — it starts before the first row

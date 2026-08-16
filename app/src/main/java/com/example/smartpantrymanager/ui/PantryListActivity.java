@@ -2,9 +2,14 @@ package com.example.smartpantrymanager.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -78,6 +83,49 @@ public class PantryListActivity extends AppCompatActivity
         fabAdd.setOnClickListener(v -> openAddScreen());
 
         BottomNavHelper.setup(this, R.id.nav_pantry);
+    }
+
+    /** Puts the Clear all option into the toolbar overflow menu. */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_pantry_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_clear_all) {
+            confirmClearAll();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Asks before emptying the pantry.
+     *
+     * The item count is shown in the message so the user knows exactly how much
+     * they are about to lose. There is no undo, so the confirmation matters.
+     */
+    private void confirmClearAll() {
+        int count = databaseHelper.getPantryItemCount();
+
+        // Nothing to clear, so say so rather than showing a pointless dialog.
+        if (count == 0) {
+            Toast.makeText(this, R.string.clear_all_already_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.clear_all_title)
+                .setMessage(getString(R.string.clear_all_message, count))
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.action_clear_all, (dialog, which) -> {
+                    databaseHelper.deleteAllPantryItems();
+                    loadPantryItems();
+                    Toast.makeText(this, R.string.clear_all_done, Toast.LENGTH_SHORT).show();
+                })
+                .show();
     }
 
     /**
