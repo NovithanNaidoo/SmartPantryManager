@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The opening screen: logo, tagline and an Enter button.
+
+    The six ingredient icons all sit in the centre of the screen in this layout.
+    SplashActivity moves them out into a ring at runtime, which keeps the maths in
+    one place and means the ring stays centred on any screen size.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green_light"
+    tools:context=".ui.SplashActivity">
+
+    <!-- The ring of ingredients, behind the logo. -->
+    <FrameLayout
+        android:id="@+id/layoutIngredients"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/foodTomato"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/splash_ingredient_description"
+            android:src="@drawable/ic_food_tomato" />
+
+        <ImageView
+            android:id="@+id/foodEgg"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/splash_ingredient_description"
+            android:src="@drawable/ic_food_egg" />
+
+        <ImageView
+            android:id="@+id/foodCarrot"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/splash_ingredient_description"
+            android:src="@drawable/ic_food_carrot" />
+
+        <ImageView
+            android:id="@+id/foodBread"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/splash_ingredient_description"
+            android:src="@drawable/ic_food_bread" />
+
+        <ImageView
+            android:id="@+id/foodCheese"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/splash_ingredient_description"
+            android:src="@drawable/ic_food_cheese" />
+
+        <ImageView
+            android:id="@+id/foodMilk"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/splash_ingredient_description"
+            android:src="@drawable/ic_food_milk" />
+
+    </FrameLayout>
+
+    <!-- Logo, name and tagline, sitting above the ingredients. -->
+    <LinearLayout
+        android:id="@+id/layoutBranding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imageLogo"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:contentDescription="@string/splash_logo_description"
+            android:src="@drawable/ic_logo" />
+
+        <TextView
+            android:id="@+id/textAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/app_name"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/green_dark" />
+
+        <TextView
+            android:id="@+id/textTagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/splash_tagline"
+            android:textSize="15sp"
+            android:textColor="@color/text_secondary" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonEnter"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="72dp"
+        android:paddingHorizontal="32dp"
+        android:text="@string/splash_enter"
+        android:textSize="16sp"
+        app:backgroundTint="@color/green_primary"
+        app:cornerRadius="27dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+</FrameLayout>

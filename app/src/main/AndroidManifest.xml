@@ -30,14 +30,20 @@
             the app.
         -->
         <activity
-            android:name=".ui.PantryListActivity"
-            android:exported="true">
+            android:name=".ui.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SmartPantryManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- The main screen, opened from the splash screen. -->
+        <activity
+            android:name=".ui.PantryListActivity"
+            android:exported="false" />
 
         <!--
             The add/edit form. exported="false" because only this app opens it.

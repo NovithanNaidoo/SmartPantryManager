@@ -1,0 +1,45 @@
+<!--
+    The app logo: a bowl with a leaf above it, drawn as vector paths so it stays
+    sharp at any size.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="140dp"
+    android:height="140dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Green circle background -->
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M24,2 A22,22 0 1,0 24,46 A22,22 0 1,0 24,2 Z" />
+
+    <!-- Lighter inner ring for a bit of depth -->
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M24,5 A19,19 0 1,0 24,43 A19,19 0 1,0 24,5 Z" />
+
+    <!-- The bowl -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,25 h24 c0,6.6 -5.4,12 -12,12 s-12,-5.4 -12,-12 z" />
+
+    <!-- Bowl base -->
+    <path
+        android:fillColor="#E8F5E9"
+        android:pathData="M18,38 h12 v2 h-12 z" />
+
+    <!-- Leaf rising out of the bowl -->
+    <path
+        android:fillColor="#66BB6A"
+        android:pathData="M24,10 c4,1 6,4 6,8 c-4,-1 -6,-4 -6,-8 z" />
+
+    <path
+        android:fillColor="#A5D6A7"
+        android:pathData="M24,10 c-4,1 -6,4 -6,8 c4,-1 6,-4 6,-8 z" />
+
+    <!-- Stem -->
+    <path
+        android:fillColor="#66BB6A"
+        android:pathData="M23.2,17 h1.6 v6 h-1.6 z" />
+
+</vector>

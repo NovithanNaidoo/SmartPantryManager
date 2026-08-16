@@ -7,6 +7,12 @@
         make translating the app possible without touching any code.
     -->
 
+    <!-- Splash screen -->
+    <string name="splash_tagline">Cook what you already have</string>
+    <string name="splash_enter">Enter My Pantry</string>
+    <string name="splash_logo_description">Smart Pantry Manager logo</string>
+    <string name="splash_ingredient_description">Food ingredient</string>
+
     <!-- Bottom navigation tab labels. Kept short so they fit on small screens. -->
     <string name="nav_pantry">Pantry</string>
     <string name="nav_suggested">Suggested</string>
