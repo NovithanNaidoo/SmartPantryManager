@@ -2,7 +2,7 @@
 
 An Android application that helps reduce household food waste by tracking the
 ingredients a user already has at home and suggesting recipes they can cook using
-**strictly** those ingredients-no shopping trip required.
+**strictly** those ingredients - no shopping trip required.
 
 Built in Java for Mobile App Development 700, Richfield Graduate Institute of
 Technology.
@@ -13,10 +13,10 @@ Technology.
 
 ## The problem it solves
 
-Food goes to wast because it's forgotten in the cupboard, or because you find a recipe
+Food goes to waste because it's forgotten in the cupboard, or because you find a recipe
 online and realise halfway through that you're missing two ingredients. Smart Pantry 
 Manager reverses that order. Instead of choosing a recipe and then shopping for it, you
-record what you already have at hone, and the app tells you what is realistically cookable
+record what you already have at home, and the app tells you what is realistically cookable
 right now.
 
 ## Core feature — strict ingredient matching
@@ -179,4 +179,5 @@ disagree about whether a recipe is cookable.
 ## Author
 
 Novithan Naidoo — BSc Information Technology, Final Year
+
 Richfield Graduate Institute of Technology
