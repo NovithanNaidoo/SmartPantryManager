@@ -2,7 +2,7 @@
 
 An Android application that helps reduce household food waste by tracking the
 ingredients a user already has at home and suggesting recipes they can cook using
-**strictly** those ingredients no shopping trip required.
+**strictly** those ingredients-no shopping trip required.
 
 Built in Java for Mobile App Development 700, Richfield Graduate Institute of
 Technology.
@@ -13,11 +13,11 @@ Technology.
 
 ## The problem it solves
 
-Food goes to waste as it's forgotten in the cupboard or is found to be spoiled. Finding
-a recipe online and halfway through realizing, you've missed two ingredients. With smart
-Pantry Management, the order is reversed: you first shop and then cook. Users take inventory 
-of what they have at home and the app informs them about what is 
-realistically cookable at the moment.
+Food goes to wast because it's forgotten in the cupboard, or because you find a recipe
+online and realise halfway through that you're missing two ingredients. Smart Pantry 
+Manager reverses that order. Instead of choosing a recipe and then shopping for it, you
+record what you already have at hone, and the app tells you what is realistically cookable
+right now.
 
 ## Core feature — strict ingredient matching
 
@@ -101,9 +101,9 @@ unit                                               quantity
 expiry_date   (nullable)                           unit
 ```
 
-Unlike, ingredients possess properties that are not shared with other ingredients.
-A recipe requires numerous ingredients while one column can provide only one value. 
-The ingredient row refers back to the recipe, which is a one-to-many relationship.
+A recipe requires many ingredients, and a single database column can only hold one
+value. Ingredients therefore live in their own table, with each row referring back
+to the recipe it belongs to. That is a one-to-many relationship.
 `ON DELETE CASCADE` means deleting a recipe removes its ingredients automatically.
 
 User settings are stored separately in SharedPreferences, since they are a couple of
