@@ -13,11 +13,9 @@ import java.util.Map;
 
 /**
  * Decides which recipes the user can actually cook right now.
- *
  * THE RULE: a recipe is only suggested if EVERY ingredient it needs is in the
  * pantry, in at least the required amount. Four out of five ingredients is not
  * good enough. The recipe is left out.
- *
  * This is the core of the app, so it lives in its own class rather than being
  * buried inside a screen. That keeps it easy to find, easy to read, and means
  * the screens only have to display the result.
@@ -48,7 +46,6 @@ public final class RecipeMatcher {
 
     /**
      * Recipes missing exactly one ingredient.
-     *
      * This is the optional bonus list from the brief. It is worked out and shown
      * completely separately from the makeable list, so the two can never be
      * confused with each other.
@@ -89,7 +86,6 @@ public final class RecipeMatcher {
 
     /**
      * Counts how many of a recipe's ingredients the pantry cannot cover.
-     *
      * Zero means the recipe is makeable. This single method drives both lists,
      * so the strict rule is written once and cannot drift apart.
      */
@@ -108,7 +104,6 @@ public final class RecipeMatcher {
 
     /**
      * Checks one ingredient: is it in the pantry, and is there enough of it?
-     *
      * Both halves must pass. Having the right ingredient but not enough of it
      * counts as missing, which is what makes the rule strict about quantity and
      * not just about names.
@@ -129,11 +124,9 @@ public final class RecipeMatcher {
 
     /**
      * Builds a lookup of pantry items keyed by their tidied-up name.
-     *
      * Doing this once per screen load means each ingredient check is an instant
      * map lookup instead of a scan through the whole pantry. With 18 recipes of
      * about 5 ingredients each, that is roughly 90 lookups per refresh.
-     *
      * If the user has the same ingredient listed twice, the larger quantity is
      * kept, since that is the one more likely to satisfy a recipe.
      */

@@ -149,6 +149,7 @@ manual setup or import is needed.
 | Database | SQLite via `SQLiteOpenHelper` |
 | Settings storage | SharedPreferences |
 | Architecture | Activities, with matching logic in its own package |
+| Tested on | Samsung Galaxy A26 5G and Xiaomi Redmi (M2010J19), both physical devices |
 
 No mapping SDK, location services or GPS features are used anywhere in this
 application. The app requests no permissions at all.
